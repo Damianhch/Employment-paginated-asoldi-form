@@ -80,9 +80,6 @@ export default function Page2({ onBack, onSubmit }: Page2Props) {
   return (
     <div className="employment-card page2">
       <ProgressBar filledCount={1} />
-      <p className="page2-intro">
-        Ikke alle har det som trengs for å bli telefon selger, men hvis du tror du har det som kreves skriv ned din data nedenfor.
-      </p>
       <form onSubmit={handleSubmit} className="page2-form">
         <div className="form-field">
           <label htmlFor="fullName">Ditt fulle navn *</label>
