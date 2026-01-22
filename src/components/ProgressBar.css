@@ -1,0 +1,20 @@
+.progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  background: #fff;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.progress-dot.filled {
+  background: #FF5B00;
+  border-color: #FF5B00;
+}

@@ -1,0 +1,32 @@
+.page4 {
+  align-items: center;
+  text-align: center;
+}
+
+.page4-check {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #FF5B00;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.page4-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  margin: 12px 0 8px 0;
+}
+
+.page4-text {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+}
