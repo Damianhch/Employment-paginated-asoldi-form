@@ -18,7 +18,7 @@ export default function Page1({ onNext }: Page1Props) {
         <li>Opplæring og oppfølging</li>
       </ul>
       <button type="button" className="btn-primary" onClick={onNext}>
-        Interessert?
+        Søk Nå
       </button>
     </div>
   )
