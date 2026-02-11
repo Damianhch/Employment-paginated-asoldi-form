@@ -1,23 +1,20 @@
 import { useState, useRef } from 'react'
-import emailjs from '@emailjs/browser'
 import type { FormData } from '../App'
 import ProgressBar from './ProgressBar'
 import './Page2.css'
 
 interface Page2Props {
   onBack: () => void
-  onSubmit: (data: FormData) => void
+  onNext: (data: Partial<FormData>) => void
+  formData: FormData
 }
 
-const TO_EMAIL = 'daracha777@gmail.com'
-
-export default function Page2({ onBack, onSubmit }: Page2Props) {
-  const [fullName, setFullName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [cvFile, setCvFile] = useState<File | null>(null)
+export default function Page2({ onBack, onNext, formData }: Page2Props) {
+  const [fullName, setFullName] = useState(formData.fullName)
+  const [email, setEmail] = useState(formData.email)
+  const [phone, setPhone] = useState(formData.phone)
+  const [cvFile, setCvFile] = useState<File | null>(formData.cvFile)
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [sending, setSending] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const validate = (): boolean => {
@@ -27,47 +24,15 @@ export default function Page2({ onBack, onSubmit }: Page2Props) {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = 'Ugyldig e-postadresse'
     const digits = (phone || '').replace(/\D/g, '')
     if (digits.length < 8) e.phone = 'Et gyldig norsk telefonnummer er påkrevd'
-    if (!cvFile) e.cvFile = 'Last opp CV'
+    // CV is now optional - no validation
     setErrors(e)
     return Object.keys(e).length === 0
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!validate()) return
-    const data: FormData = { fullName: fullName.trim(), email: email.trim(), phone: phone.trim(), cvFile }
-    setSending(true)
-    try {
-      // EmailJS – paste your credentials here (same as referral form). Vercel env vars optional.
-      const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_83hq0el'
-      const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_l0zlwva'
-      const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '8FEJnnbeR9l93wSu4'
-      // Initialize EmailJS
-      emailjs.init(EMAILJS_PUBLIC_KEY)
-
-      const cvName = cvFile ? cvFile.name : 'Ikke lastet opp'
-      const phoneFull = `+47 ${phone.trim()}`
-      
-      // Send email using EmailJS
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
-        to_email: TO_EMAIL,
-        from_name: data.fullName,
-        from_email: data.email,
-        from_phone: phoneFull,
-        cv_file_name: cvName,
-        subject: 'Ny søknad - telefon selger',
-        message: `Søknad mottatt:\n\nNavn: ${data.fullName}\nE-post: ${data.email}\nTelefon: ${phoneFull}\nCV: ${cvName}`,
-      })
-      onSubmit(data)
-    } catch (err) {
-      console.error('Email sending failed:', err)
-      alert('Kunne ikke sende søknaden. Vennligst prøv igjen.')
-    } finally {
-      setSending(false)
-    }
+    onNext({ fullName: fullName.trim(), email: email.trim(), phone: phone.trim(), cvFile })
   }
 
   const onDrop = (e: React.DragEvent) => {
@@ -121,7 +86,7 @@ export default function Page2({ onBack, onSubmit }: Page2Props) {
           {errors.phone && <span className="field-error">{errors.phone}</span>}
         </div>
         <div className="form-field">
-          <label>Last opp CVen din *</label>
+          <label>Last opp CVen din (valgfritt)</label>
           <div
             className={`file-zone ${errors.cvFile ? 'error' : ''} ${cvFile ? 'has-file' : ''}`}
             onDrop={onDrop}
@@ -143,11 +108,11 @@ export default function Page2({ onBack, onSubmit }: Page2Props) {
           {errors.cvFile && <span className="field-error">{errors.cvFile}</span>}
         </div>
         <div className="page2-actions">
-          <button type="button" className="btn-secondary" onClick={onBack} disabled={sending}>
+          <button type="button" className="btn-secondary" onClick={onBack}>
             Forrige side
           </button>
-          <button type="submit" className="btn-primary" disabled={sending}>
-            {sending ? 'Sender…' : 'Send søknad'}
+          <button type="submit" className="btn-primary">
+            Neste
           </button>
         </div>
       </form>

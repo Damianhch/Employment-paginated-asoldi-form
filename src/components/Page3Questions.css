@@ -1,0 +1,59 @@
+.questions-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.questions-form .form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.questions-form label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.questions-form select {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.questions-form select.error {
+  border-color: #c00;
+}
+
+.questions-form textarea {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.questions-form textarea.error {
+  border-color: #c00;
+}
+
+.field-error {
+  font-size: 0.8rem;
+  color: #c00;
+}
+
+.page3-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.page3-actions .btn-primary {
+  margin-left: auto;
+}
